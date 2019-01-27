@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts.GOAP
 {
@@ -37,6 +38,19 @@ namespace Assets.Scripts.GOAP
                 TotalCost += actionPlan.TotalCost;
                 Valid = actionPlan.Valid;
             }
+        }
+
+        public bool ExecuteActionPlan(GameObject go)
+        {
+            if (!Plan[0].IsValid())
+                return false;
+
+            Plan[0].DoWork(go);
+
+            if (Plan[0].IsComplete())
+                Plan.RemoveAt(0);
+
+            return true;
         }
     }
 }
