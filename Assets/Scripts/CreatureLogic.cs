@@ -35,13 +35,7 @@ public class CreatureLogic : MonoBehaviour
         }
         else
         {
-            m_actionPlan.Plan[0].DoWork(this.gameObject);
-
-            if (m_actionPlan.Plan[0].IsComplete())
-                m_actionPlan.Plan.RemoveAt(0);
-
-            if (!m_actionPlan.Plan[0].IsValid())
-                m_actionPlan = null;
+            m_actionPlan.ExecuteActionPlan(this.gameObject);
         }
     }
 }
