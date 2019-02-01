@@ -22,7 +22,7 @@ public class SpawnCreatures : MonoBehaviour
 
     private void Update()
     {
-        int creatureCount = GameObject.FindGameObjectsWithTag("SmallCreature").Length;
+        int creatureCount = GameObject.FindGameObjectsWithTag("Creature").Length;
         if (creatureCount < CreatureDensitiy)
         {
             SpawnCreature(m_groundSize);
