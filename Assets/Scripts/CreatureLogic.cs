@@ -29,13 +29,13 @@ public class CreatureLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (m_actionPlan == null || m_actionPlan.Plan.Count == 0 || !m_actionPlan.Valid)
+        if (m_actionPlan != null && !m_actionPlan.IsComplete && m_actionPlan.StillValid())
         {
-            m_actionPlan = m_actionPlanner.Plan(m_goal.DesiredEffect);
+            m_actionPlan.ExecuteActionPlan(this.gameObject);
         }
         else
         {
-            m_actionPlan.ExecuteActionPlan(this.gameObject);
+            m_actionPlan = m_actionPlanner.Plan(m_goal.DesiredEffect);
         }
     }
 }
