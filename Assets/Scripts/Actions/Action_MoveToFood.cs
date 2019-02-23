@@ -26,11 +26,14 @@ namespace Assets.Scripts.Actions
         {
             if (m_memory.ClosestFood != null)
             {
-                Vector3 directionToTargetPosition = m_memory.ClosestFood.transform.position - gameAgent.transform.position;
-                float distThisFrame = 5 * Time.deltaTime;
-                if (directionToTargetPosition.magnitude > distThisFrame)
+                Vector3 lookAtGoal = new Vector3(m_memory.ClosestFood.transform.position.x, 0.5f, m_memory.ClosestFood.transform.position.z);
+                Vector3 directionToTargetPosition = lookAtGoal - gameAgent.transform.position;
+
+                gameAgent.transform.rotation = Quaternion.Slerp(gameAgent.transform.rotation, Quaternion.LookRotation(directionToTargetPosition), m_memory.RotSpeed * Time.deltaTime);
+
+                if (Vector3.Distance(gameAgent.transform.position, lookAtGoal) > m_memory.CloseEnoughRadius)
                 {
-                    gameAgent.transform.Translate(directionToTargetPosition.normalized * distThisFrame, Space.World);
+                    gameAgent.transform.Translate(0, 0, m_memory.Speed * Time.deltaTime);
                 }
                 else
                 {

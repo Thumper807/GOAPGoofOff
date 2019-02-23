@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnCreatures : MonoBehaviour
 {
     public GameObject[] CreaturesToSpawn;
-    public int CreatureDensitiy = 10;
+    private int CreatureDensitiy = 10;
     private Vector3 m_groundSize;
     private int m_creatureMask;
 
@@ -36,7 +36,7 @@ public class SpawnCreatures : MonoBehaviour
     {
         float randomX = Random.Range(-(groundSize.x / 2), groundSize.x / 2);
         float randomZ = Random.Range(-(groundSize.z / 2), groundSize.z / 2);
-        Vector3 randomSpot = new Vector3(randomX, 0.0f, randomZ);
+        Vector3 randomSpot = new Vector3(randomX, 0.5f, randomZ);
 
         int failedAttempt = 0;
 

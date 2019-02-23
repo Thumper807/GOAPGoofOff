@@ -27,7 +27,7 @@ public class CreatureLogic : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (m_actionPlan != null && !m_actionPlan.IsComplete && m_actionPlan.StillValid())
         {
