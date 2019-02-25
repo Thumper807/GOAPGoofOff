@@ -36,11 +36,11 @@ public class SpawnCreatures : MonoBehaviour
     {
         float randomX = Random.Range(-(groundSize.x / 2), groundSize.x / 2);
         float randomZ = Random.Range(-(groundSize.z / 2), groundSize.z / 2);
-        Vector3 randomSpot = new Vector3(randomX, 0.5f, randomZ);
+        Vector3 randomSpot = new Vector3(randomX, 0.0f, randomZ);
 
         int failedAttempt = 0;
 
-        while (failedAttempt < 100 && Physics.CheckSphere(randomSpot, 0.5f, m_creatureMask))
+        while (failedAttempt < 100 && Physics.CheckSphere(randomSpot, 0.0f, m_creatureMask))
         {
             randomSpot.x = Random.Range(-(groundSize.x / 2), groundSize.x / 2);
             randomSpot.z = Random.Range(-(groundSize.z / 2), groundSize.z / 2);

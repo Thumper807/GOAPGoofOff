@@ -16,8 +16,7 @@ namespace Assets.Scripts.GOAP
 
         bool HasPrecondition();
         bool IsComplete();
-        bool IsValid();
         void DoReset();
-        void DoWork(GameObject gameAgent);
+        bool DoWork(GameObject gameAgent);
     }
 }

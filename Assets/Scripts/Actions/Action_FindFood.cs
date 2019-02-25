@@ -27,14 +27,14 @@ namespace Assets.Scripts.Actions
             m_closestFoodToEat = null;
         }
 
-        public override void DoWork(GameObject gameAgent)
+        public override bool DoWork(GameObject gameAgent)
         {
             switch (m_memory.Type)
             {
-                case CreatureType.Vegetarian:
+                case DietType.Vegetarian:
                     m_layerMaskToUse = VEGETATIONMASK;
                     break;
-                case CreatureType.Carnivore:
+                case DietType.Carnivore:
                     m_layerMaskToUse = CREATUREMASK;
                     break;
             }
@@ -59,6 +59,8 @@ namespace Assets.Scripts.Actions
             }
 
             m_memory.ClosestFood = m_closestFoodToEat;
+
+            return m_memory.ClosestFood != null;
         }
 
         public override bool IsComplete()
@@ -72,11 +74,6 @@ namespace Assets.Scripts.Actions
             {
                 return false;
             }
-        }
-
-        public override bool IsValid()
-        {
-            return true;
         }
     }
 }

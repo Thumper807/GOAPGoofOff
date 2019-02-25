@@ -22,11 +22,11 @@ namespace Assets.Scripts.Actions
             m_atTarget = false;
         }
 
-        public override void DoWork(GameObject gameAgent)
+        public override bool DoWork(GameObject gameAgent)
         {
             if (m_memory.ClosestFood != null)
             {
-                Vector3 lookAtGoal = new Vector3(m_memory.ClosestFood.transform.position.x, 0.5f, m_memory.ClosestFood.transform.position.z);
+                Vector3 lookAtGoal = new Vector3(m_memory.ClosestFood.transform.position.x, 0.0f, m_memory.ClosestFood.transform.position.z);
                 Vector3 directionToTargetPosition = lookAtGoal - gameAgent.transform.position;
 
                 gameAgent.transform.rotation = Quaternion.Slerp(gameAgent.transform.rotation, Quaternion.LookRotation(directionToTargetPosition), m_memory.RotSpeed * Time.deltaTime);
@@ -39,6 +39,12 @@ namespace Assets.Scripts.Actions
                 {
                     m_atTarget = true;
                 }
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -53,11 +59,6 @@ namespace Assets.Scripts.Actions
             {
                 return false;
             }
-        }
-
-        public override bool IsValid()
-        {
-            return m_memory.ClosestFood != null;
         }
     }
 }

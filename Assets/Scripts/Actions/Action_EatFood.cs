@@ -22,11 +22,13 @@ namespace Assets.Scripts.Actions
             m_foodEaten = false;
         }
 
-        public override void DoWork(GameObject gameAgent)
+        public override bool DoWork(GameObject gameAgent)
         {
             GameObject food = m_memory.ClosestFood;
             GameObject.Destroy(food);
             m_foodEaten = true;
+
+            return true;
         }
 
         public override bool IsComplete()
@@ -40,11 +42,6 @@ namespace Assets.Scripts.Actions
             {
                 return false;
             }
-        }
-
-        public override bool IsValid()
-        {
-            return m_memory.ClosestFood != null;
         }
     }
 }

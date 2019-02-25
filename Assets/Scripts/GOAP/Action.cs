@@ -32,11 +32,6 @@ namespace Assets.Scripts.GOAP
             return m_precondtion != "none";
         }
 
-        public virtual bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual bool IsComplete()
         {
             throw new NotImplementedException();
@@ -47,7 +42,7 @@ namespace Assets.Scripts.GOAP
             throw new NotImplementedException();
         }
 
-        public virtual void DoWork(GameObject gameAgent)
+        public virtual bool DoWork(GameObject gameAgent)
         {
             throw new NotImplementedException();
         }

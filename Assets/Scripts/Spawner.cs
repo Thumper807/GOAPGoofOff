@@ -67,7 +67,7 @@ public class Spawner : MonoBehaviour
 
         int failedAttempt = 0;
 
-        while (failedAttempt < 100 && Physics.CheckSphere(randomSpot, 0.5f, m_vegetationMask))
+        while (failedAttempt < 100 && Physics.CheckSphere(randomSpot, 0.0f, m_vegetationMask))
         {
             randomSpot.x = Random.Range(-(groundSize.x / 2), groundSize.x / 2);
             randomSpot.z = Random.Range(-(groundSize.z / 2), groundSize.z / 2);
