@@ -322,9 +322,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CreaturesToSpawn:
-  - {fileID: 8028027677646999429, guid: 3b065300c300f9542822e672acd67bd2, type: 3}
-  - {fileID: 560459017, guid: e8c240f95e52fcf46a1deb05a7ae668f, type: 3}
   - {fileID: 6436026693724447673, guid: ccf42dc911ebe3a4699d8a9518c63858, type: 3}
+  - {fileID: 560459017, guid: e8c240f95e52fcf46a1deb05a7ae668f, type: 3}
+  - {fileID: 4780464887360181802, guid: 3b065300c300f9542822e672acd67bd2, type: 3}
 --- !u!114 &402574858
 MonoBehaviour:
   m_ObjectHideFlags: 0
