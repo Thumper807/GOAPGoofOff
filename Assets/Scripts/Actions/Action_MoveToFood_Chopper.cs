@@ -67,7 +67,7 @@ namespace Assets.Scripts.Actions
         {
             if (m_atTarget)
             {
-                Debug.Log("At Target");
+                //Debug.Log("At Target");
                 return true;
             }
             else

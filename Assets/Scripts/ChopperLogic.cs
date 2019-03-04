@@ -18,6 +18,8 @@ public class ChopperLogic : MonoBehaviour
         ChopperAnimator = GetComponent<Animator>();
         m_memory = this.GetComponent<CreatureMemory>();
 
+        ChopperAnimator.SetFloat("cycleOffset", Random.Range(0.0f, 1.0f));
+
         List<IAction> actions = new List<IAction>()
         {
             new Action_EatFood(gameObject),
@@ -39,7 +41,7 @@ public class ChopperLogic : MonoBehaviour
         }
         else
         {
-            Debug.Log("Plan is complete or become invalid....... replanning");
+            //Debug.Log("Plan is complete or become invalid....... replanning");
             m_actionPlan = m_actionPlanner.Plan(m_goal.DesiredEffect);
         }
     }

@@ -35,7 +35,7 @@ namespace Assets.Scripts.Actions
         {
             if (m_foodEaten == true)
             {
-                Debug.Log("Food Eaten");
+                //Debug.Log("Food Eaten");
                 return true;
             }
             else

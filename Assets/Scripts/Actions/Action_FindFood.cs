@@ -60,6 +60,32 @@ namespace Assets.Scripts.Actions
 
             m_memory.ClosestFood = m_closestFoodToEat;
 
+
+            Collider[] dudes = Physics.OverlapSphere(gameAgent.transform.position, m_memory.Vision, m_layerMaskToUse = CREATUREMASK);
+            foreach (Collider dude in dudes)
+            {
+                CreatureMemory memory = dude.GetComponent<CreatureMemory>();
+
+                if (memory.ClosestFood == m_closestFoodToEat)
+                {
+                    float dis = Vector3.Distance(memory.ClosestFood.transform.position, dude.transform.position);
+                    float time = dis * memory.Speed;
+
+                    float myDis = Vector3.Distance(memory.ClosestFood.transform.position, gameAgent.transform.position);
+                    float myTime = myDis * m_memory.Speed;
+                    if (time < myTime)
+                        Debug.Log("Dude is after the same food that I am after and he is going to get there quicker!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                }
+            }
+
+
+
+
+
+
+
+
+
             return m_memory.ClosestFood != null;
         }
 
@@ -67,7 +93,7 @@ namespace Assets.Scripts.Actions
         {
             if (m_closestFoodToEat != null)
             {
-                Debug.Log("Found Food");
+                //Debug.Log("Found Food");
                 return true;
             }
             else
