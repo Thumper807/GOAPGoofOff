@@ -1,0 +1,6 @@
+tree("Root")
+	sequence
+		FindFood()
+		MoveToFood()
+		EatFood()
+		Succeed
