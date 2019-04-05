@@ -50,6 +50,14 @@ public class Creature_BT_Tasks : MonoBehaviour
                 continue;
 
             float distance = Vector3.Distance(food.transform.position, this.transform.position);
+            Vector3 directionToTargetPosition = food.transform.position - this.transform.position;
+
+            if (IsSomethingInTheWay(directionToTargetPosition, distance))
+            {
+                Debug.Log(string.Format("{0}: Blocked while finding food", this.name));
+
+                continue;
+            }
 
             if (m_closestFoodToEat == null || distance < minDistance)
             {
@@ -74,7 +82,21 @@ public class Creature_BT_Tasks : MonoBehaviour
             if (distance > m_memory.CloseEnoughRadius)
             {
                 Vector3 directionToTargetPosition = targetPosition - this.transform.position;
+                Debug.DrawRay(this.transform.position, directionToTargetPosition, Color.magenta);
+
+                if (IsSomethingInTheWay(directionToTargetPosition, distance))
+                {
+                    Debug.Log(string.Format("{0}: Blocked while moving", this.name));
+                    m_animator.SetBool("isMoving", false);
+                    Task.current.Fail();
+
+                    //FindFood();
+
+                    return;
+                }
+
                 this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(directionToTargetPosition), m_memory.RotSpeed * Time.deltaTime);
+
 
                 m_animator.SetBool("isMoving", true);
             }
@@ -98,5 +120,18 @@ public class Creature_BT_Tasks : MonoBehaviour
         GameObject food = m_memory.ClosestFood;
         GameObject.Destroy(food);
         Task.current.Succeed();
+    }
+
+    private bool IsSomethingInTheWay(Vector3 directionToTargetPosition, float distance)
+    {
+        RaycastHit rayHitInfo;
+
+        if (Physics.Raycast(this.transform.position, directionToTargetPosition, out rayHitInfo, distance, CREATUREMASK))
+        {
+            CreatureMemory otherCreatureMemory = rayHitInfo.transform.GetComponent<CreatureMemory>();
+            return otherCreatureMemory.ClosestFood == m_memory.ClosestFood;
+        }
+
+        return false;
     }
 }

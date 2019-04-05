@@ -65,7 +65,7 @@ public class SpawnCreatures : MonoBehaviour
 
     private void DeSpawnCreature()
     {
-        GameObject[] creatures = GameObject.FindGameObjectsWithTag("SmallCreature");
+        GameObject[] creatures = GameObject.FindGameObjectsWithTag("Creature");
 
         GameObject creature = creatures[Random.Range(0, creatures.Length)];
 

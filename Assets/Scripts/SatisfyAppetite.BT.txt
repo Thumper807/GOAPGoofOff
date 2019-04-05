@@ -3,4 +3,3 @@ tree("Root")
 		FindFood()
 		MoveToFood()
 		EatFood()
-		Succeed
