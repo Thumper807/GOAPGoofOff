@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnCreatures : MonoBehaviour
 {
+    [SerializeField] private int CreatureDensitiy = 10;
     public GameObject[] CreaturesToSpawn;
-    private int CreatureDensitiy = 10;
     private Vector3 m_groundSize;
     private int m_creatureMask;
 

@@ -1,5 +1,9 @@
 tree("Root")
-	sequence
-		FindFood()
-		MoveToFood()
-		EatFood()
+	//parallel
+		sequence
+			FindFood()
+			//Wait 2.0
+			MoveToFood()
+			EatFood()
+		//while not IsBlocked
+			//CheckIfBlocked()

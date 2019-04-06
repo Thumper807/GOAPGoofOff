@@ -15,7 +15,7 @@ public class Creature_BT_Tasks : MonoBehaviour
     private int m_layerMaskToUse;
 
     private GameObject m_closestFoodToEat;
-
+    private GameObject m_attention;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +34,8 @@ public class Creature_BT_Tasks : MonoBehaviour
         }
 
         m_animator.SetFloat("cycleOffset", UnityEngine.Random.Range(0.0f, 1.0f));
+
+        m_attention = this.transform.Find("Attention").gameObject;
     }
 
     [Task]
@@ -41,7 +43,8 @@ public class Creature_BT_Tasks : MonoBehaviour
     {
         Collider[] foodToEat = Physics.OverlapSphere(this.transform.position, m_memory.Vision, m_layerMaskToUse);
 
-        float minDistance = float.MaxValue;
+        float closestDistance = float.MaxValue;
+        GameObject closestFood = null;
 
         foreach (Collider food in foodToEat)
         {
@@ -50,25 +53,34 @@ public class Creature_BT_Tasks : MonoBehaviour
                 continue;
 
             float distance = Vector3.Distance(food.transform.position, this.transform.position);
-            Vector3 directionToTargetPosition = food.transform.position - this.transform.position;
 
-            if (IsSomethingInTheWay(directionToTargetPosition, distance))
+            if (CheckIfBlocked(food.gameObject))
             {
-                Debug.Log(string.Format("{0}: Blocked while finding food", this.name));
+                m_attention.SetActive(true);
+                //Debug.Log(string.Format("{0}: Blocked while finding food", this.name));
 
                 continue;
             }
 
-            if (m_closestFoodToEat == null || distance < minDistance)
+            if (closestFood == null || distance < closestDistance)
             {
-                minDistance = distance;
-                m_closestFoodToEat = food.gameObject;
+                closestDistance = distance;
+                closestFood = food.gameObject;
             }
         }
 
-        m_memory.ClosestFood = m_closestFoodToEat;
-
-        Task.current.Complete(m_memory.ClosestFood != null);
+        if (closestFood != null)
+        {
+            m_memory.ClosestFood = closestFood;
+            m_attention.SetActive(false);
+            Task.current.Succeed();
+        }
+        else
+        {
+            m_memory.ClosestFood = null;
+            m_attention.SetActive(true);
+            Task.current.Fail();
+        }
     }
 
     [Task]
@@ -82,23 +94,25 @@ public class Creature_BT_Tasks : MonoBehaviour
             if (distance > m_memory.CloseEnoughRadius)
             {
                 Vector3 directionToTargetPosition = targetPosition - this.transform.position;
-                Debug.DrawRay(this.transform.position, directionToTargetPosition, Color.magenta);
 
-                if (IsSomethingInTheWay(directionToTargetPosition, distance))
+                if (CheckIfBlocked(m_memory.ClosestFood))
                 {
-                    Debug.Log(string.Format("{0}: Blocked while moving", this.name));
                     m_animator.SetBool("isMoving", false);
+                    m_attention.SetActive(true);
+
+                    //Debug.Log(string.Format("{0}: Blocked while moving", this.name));
+
                     Task.current.Fail();
-
-                    //FindFood();
-
                     return;
                 }
 
                 this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(directionToTargetPosition), m_memory.RotSpeed * Time.deltaTime);
 
-
-                m_animator.SetBool("isMoving", true);
+                if (m_animator.GetBool("isMoving") != true)
+                {
+                    m_animator.SetBool("isMoving", true);
+                    m_attention.SetActive(false);
+                }
             }
             else
             {
@@ -122,14 +136,24 @@ public class Creature_BT_Tasks : MonoBehaviour
         Task.current.Succeed();
     }
 
-    private bool IsSomethingInTheWay(Vector3 directionToTargetPosition, float distance)
+    [Task]
+    private bool CheckIfBlocked(GameObject target)
     {
+        if (target == null)
+            return false;
+
+        Vector3 targetPosition = new Vector3(target.transform.position.x, 0.0f, target.transform.position.z);
+        float distance = Vector3.Distance(this.transform.position, targetPosition);
+
+        Vector3 directionToTargetPosition = targetPosition - this.transform.position;
+        Debug.DrawRay(this.transform.position, directionToTargetPosition, Color.magenta);
+
         RaycastHit rayHitInfo;
 
         if (Physics.Raycast(this.transform.position, directionToTargetPosition, out rayHitInfo, distance, CREATUREMASK))
         {
             CreatureMemory otherCreatureMemory = rayHitInfo.transform.GetComponent<CreatureMemory>();
-            return otherCreatureMemory.ClosestFood == m_memory.ClosestFood;
+            return otherCreatureMemory.ClosestFood == target;
         }
 
         return false;
